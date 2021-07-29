@@ -1,0 +1,110 @@
+# Reload tmux configuration
+bind r source-file ~/.tmux.conf \; display-message "Config reloaded..."
+set -g default-shell "/usr/local/bin/fish"
+
+# enable mouse
+set -g mouse on
+
+bind m set -g mouse on
+bind M set -g mouse off
+
+# Act like vim
+set-window-option -g mode-keys vi
+setw -g mode-keys vi
+bind-key -T copy-mode-vi v send-keys -X begin-selection
+bind-key -T copy-mode-vi y send-keys -X copy-pipe-and-cancel "xclip -se c -i"
+bind-key -T copy-mode-vi MouseDragEnd1Pane send-keys -X copy-pipe-and-cancel "xclip -se c -i"
+
+# Bind ']' to use pbpaste
+bind ] run "tmux set-buffer \"$(xclip -se c -o)\"; tmux paste-buffer"
+
+# Bind '/' to go to last window
+bind / last-window
+
+# Start window numbers at 1 to match keyboard order with tmux window order
+set -g base-index 1
+set-window-option -g pane-base-index 1
+
+# Renumber windows sequentially after closing any of them
+set -g renumber-windows on
+
+# Do not rename automatically
+set-option -g allow-rename off
+
+# Increase scrollback lines
+set -g history-limit 10000
+
+# Easy split pane commands
+bind = split-window -h -c "#{pane_current_path}"
+bind - split-window -v -c "#{pane_current_path}"
+unbind '"'
+unbind %
+
+# Enable activity alerts
+setw -g monitor-activity on
+set -g visual-activity on
+
+# Resize
+bind-key -r    M-Up resize-pane -U
+bind-key -r  M-Down resize-pane -D
+bind-key -r  M-Left resize-pane -L
+bind-key -r M-Right resize-pane -R
+
+# Local config
+if-shell "[ -f ~/.tmux.conf.local ]" 'source ~/.tmux.conf.local'
+
+# Design
+
+# Basic status bar colors
+set -g status-style fg=colour240,bg=colour233
+
+# Left side of status bar
+set -g status-left-style bg=colour233,fg=colour243
+set -g status-left-length 40
+set -g status-left ""
+
+# Right side of status bar
+set -g status-right-style bg=colour233,fg=colour243
+set -g status-right-length 150
+set -g status-right "#[fg=colour240,bg=colour235] #I:#P "
+
+# Window status
+set -g window-status-format " #I:#W#F "
+set -g window-status-current-format " #I:#W#F "
+
+# Current window status
+set -g window-status-current-style bg=colour39,fg=colour232
+
+# Window with activity status
+set -g window-status-activity-style bg=colour233,fg=colour75
+
+# Window separator
+set -g window-status-separator ""
+
+# Window status alignment
+set -g status-justify left
+
+# Pane border
+set -g pane-border-style bg=default,fg=colour238
+
+# Active pane border
+set -g pane-active-border-style bg=default,fg=colour39
+
+# Pane number indicator
+set -g display-panes-colour colour233
+set -g display-panes-active-colour colour245
+
+# Clock mode
+set -g clock-mode-colour colour39
+set -g clock-mode-style 24
+
+# Message
+set -g message-style bg=colour39,fg=black
+
+# Command message
+set -g message-command-style bg=colour233,fg=black
+
+# Mode
+set -g mode-style bg=colour39,fg=colour232
+
+
