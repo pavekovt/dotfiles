@@ -1,6 +1,6 @@
 # Reload tmux configuration
 bind r source-file ~/.tmux.conf \; display-message "Config reloaded..."
-set -g default-shell "/usr/local/bin/fish"
+set -g default-shell "/opt/homebrew/bin/fish"
 
 # enable mouse
 set -g mouse on
