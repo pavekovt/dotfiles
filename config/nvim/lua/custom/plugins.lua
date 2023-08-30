@@ -60,7 +60,7 @@ local plugins = {
   },
   {
     "nvim-telescope/telescope.nvim",
-    dependencies = { "nvim-lua/plenary.nvim" },
+    dependencies = { "nvim-lua/plenary.nvim", "jremmen/vim-ripgrep" },
   },
   {
     "jose-elias-alvarez/null-ls.nvim",
@@ -74,5 +74,31 @@ local plugins = {
     "mbbill/undotree",
     lazy = false,
   },
+  {
+    "folke/todo-comments.nvim",
+    dependencies = { "nvim-lua/plenary.nvim" },
+    event = "VeryLazy",
+    config = function()
+      local options = {}
+      if vim.fn.executable "rg" == 0 then
+        options.search = {
+          command = "grep",
+          args = {
+            "--recursive",
+            "--color=never",
+            "--with-filename",
+            "--line-number",
+            "--binary-files=without-match",
+            "--byte-offset",
+            '--exclude-dir=".*"',
+            "--extended-regexp",
+          },
+          pattern = ".*(KEYWORDS):",
+        }
+      end
+      require("todo-comments").setup(options)
+    end,
+  },
 }
+-- TODO: test
 return plugins
