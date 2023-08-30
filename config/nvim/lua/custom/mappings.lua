@@ -11,6 +11,8 @@ M.general = {
 
     ["n"] = { "nzzzv", "Next occurance" },
     ["N"] = { "Nzzzv", "Previous occurance" },
+    ["<C-o>"] = { "<C-o>zz" },
+    ["L"] = { "<cmd>Telescope lsp_document_symbols<CR>" },
   },
   v = {
     ["J"] = { ":m '>+1<CR>gv=gv" },

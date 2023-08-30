@@ -9,6 +9,9 @@ local plugins = {
       require "plugins.configs.lspconfig"
       require "custom.configs.lspconfig"
     end,
+    opts = {
+      format = { timeout_ms = 10000 },
+    },
   },
   {
     "williamboman/mason.nvim",
