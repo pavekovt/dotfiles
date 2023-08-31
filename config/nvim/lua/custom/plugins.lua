@@ -26,6 +26,10 @@ local plugins = {
         "golines",
         "delve",
 
+        -- Js
+        "eslint",
+        "tsc",
+
         "stylua",
       },
     },
@@ -77,7 +81,7 @@ local plugins = {
   {
     "folke/todo-comments.nvim",
     dependencies = { "nvim-lua/plenary.nvim" },
-    event = "VeryLazy",
+    event = { "BufReadPre" },
     config = function()
       local options = {}
       if vim.fn.executable "rg" == 0 then
@@ -99,6 +103,9 @@ local plugins = {
       require("todo-comments").setup(options)
     end,
   },
+  {
+    "vimwiki/vimwiki",
+    event = "BufReadPre",
+  },
 }
--- TODO: test
 return plugins

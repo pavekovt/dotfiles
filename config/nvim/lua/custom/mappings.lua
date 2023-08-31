@@ -13,6 +13,7 @@ M.general = {
     ["N"] = { "Nzzzv", "Previous occurance" },
     ["<C-o>"] = { "<C-o>zz" },
     ["L"] = { "<cmd>Telescope lsp_document_symbols<CR>" },
+    ["<leader>wx"] = { "<cmd>VimwikiToggleListItem<CR>" },
   },
   v = {
     ["J"] = { ":m '>+1<CR>gv=gv" },
