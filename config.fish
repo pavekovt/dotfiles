@@ -1,12 +1,12 @@
-if status is-interactive
-    # Commands to run in interactive sessions can go here
-end
-
-alias cat=bat
-alias vim=nvim
-alias ktl=kubectl
-
+alias vim nvim
+alias ktl kubectl
+alias ktla "kubectl apply"
 # migrating from https://github.com/robbyrussell/oh-my-zsh/blob/master/plugins/git/git.plugin.zsh 
+
+alias awslocal="AWS_ACCESS_KEY_ID=test AWS_SECRET_ACCESS_KEY=test AWS_DEFAULT_REGION=us-east-1 aws --endpoint-url=http://localhost:4566"
+alias dc='docker-compose'
+alias vim='nvim'
+alias cat='bat --style=full'
 # Aliases
 alias g='git'
 #compdef g=git
@@ -23,9 +23,11 @@ alias gup='git pull --rebase'
 alias gp='git push'
 #compdef _git gp=git-push
 alias gd='git diff'
+
 function gdv
   git diff -w $argv | view -
 end
+
 #compdef _git gdv=git-diff
 alias gc='git commit -v'
 #compdef _git gc=git-commit
@@ -35,11 +37,11 @@ alias gca='git commit -v -a'
 #compdef _git gc=git-commit
 alias gca!='git commit -v -a --amend'
 #compdef _git gca!=git-commit
-alias gcmsg='git commit -m'
+alias gcm='git commit -m'
 #compdef _git gcmsg=git-commit
 alias gco='git checkout'
 #compdef _git gco=git-checkout
-alias gcm='git commit -m'
+alias gcom='git checkout master'
 alias gr='git remote'
 #compdef _git gr=git-remote
 alias grv='git remote -v'
@@ -85,24 +87,31 @@ alias grh='git reset HEAD'
 alias grhh='git reset HEAD --hard'
 alias gclean='git reset --hard; and git clean -dfx'
 alias gwc='git whatchanged -p --abbrev-commit --pretty=medium'
+
 #remove the gf alias
 #alias gf='git ls-files | grep'
+
 alias gpoat='git push origin --all; and git push origin --tags'
 alias gmt='git mergetool --no-prompt'
 #compdef _git gm=git-mergetool
+
 alias gg='git gui citool'
 alias gga='git gui citool --amend'
 alias gk='gitk --all --branches'
+
 alias gsts='git stash show --text'
 alias gsta='git stash'
 alias gstp='git stash pop'
 alias gstd='git stash drop'
+
 # Will cd into the top of the current repository
 # or submodule.
 alias grt='cd (git rev-parse --show-toplevel; or echo ".")'
+
 # Git and svn mix
 alias git-svn-dcommit-push='git svn dcommit; and git push github master:svntrunk'
 #compdef git-svn-dcommit-push=git
+
 alias gsr='git svn rebase'
 alias gsd='git svn dcommit'
 #
@@ -110,15 +119,17 @@ alias gsd='git svn dcommit'
 # Usage example: git pull origin $(current_branch)
 #
 function current_branch
-set ref (git symbolic-ref HEAD 2> /dev/null); or \
-set ref (git rev-parse --short HEAD 2> /dev/null); or return
-echo ref | sed s-refs/heads--
+  set ref (git symbolic-ref HEAD 2> /dev/null); or \
+  set ref (git rev-parse --short HEAD 2> /dev/null); or return
+  echo ref | sed s-refs/heads--
 end
+
 function current_repository
-set ref (git symbolic-ref HEAD 2> /dev/null); or \
-set ref (git rev-parse --short HEAD 2> /dev/null); or return
-echo (git remote -v | cut -d':' -f 2)
+  set ref (git symbolic-ref HEAD 2> /dev/null); or \
+  set ref (git rev-parse --short HEAD 2> /dev/null); or return
+  echo (git remote -v | cut -d':' -f 2)
 end
+
 # these aliases take advantage of the previous function
 alias ggpull='git pull origin (current_branch)'
 #compdef ggpull=git
@@ -128,26 +139,38 @@ alias ggpush='git push origin (current_branch)'
 #compdef ggpush=git
 alias ggpnp='git pull origin (current_branch); and git push origin (current_branch)'
 #compdef ggpnp=git
+
 # Pretty log messages
 function _git_log_prettily
-if ! [ -z $1 ]; then
+  if ! [ -z $1 ]; then
     git log --pretty=$1
+  end
 end
-end
+
 alias glp="_git_log_prettily"
 #compdef _git glp=git-log
+
 # Work In Progress (wip)
 # These features allow to pause a branch development and switch to another one (wip)
 # When you want to go back to work, just unwip it
 #
 # This function return a warning if the current branch is a wip
 function work_in_progress
-if git log -n 1 | grep -q -c wip; then
-echo "WIP!!"
+  if git log -n 1 | grep -q -c wip; then
+    echo "WIP!!"
+  end
 end
-end
+
 # these alias commit and uncomit wip branches
 alias gwip='git add -A; git ls-files --deleted -z | xargs -0 git rm; git commit -m "wip"'
 alias gunwip='git log -n 1 | grep -q -c wip; and git reset HEAD~1'
 
+set -Ux FZF_DEFAULT_OPTS "\
+--color=bg+:#313244,bg:#1E1E2E,spinner:#F5E0DC,hl:#F38BA8 \
+--color=fg:#CDD6F4,header:#F38BA8,info:#CBA6F7,pointer:#F5E0DC \
+--color=marker:#B4BEFE,fg+:#CDD6F4,prompt:#CBA6F7,hl+:#F38BA8 \
+--color=selected-bg:#45475A \
+--color=border:#6C7086,label:#CDD6F4"
+
 starship init fish | source
+# fish_add_path (yarn global bin)
